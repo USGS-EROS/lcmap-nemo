@@ -7,10 +7,8 @@
             [qbits.alia :as alia]
             [qbits.hayt :as hayt]))
 
-;; Combines configuration information with Cassandra system_schema.column to create Compojure HTTP resources
+;;   Exploits Cassandra system_schema.column to enable Compojure HTTP resource creation
 ;;
-;;   cfg.keyspace
-;;   cfg.tables
 ;;
 ;;   select * from system_schema.columns where keyspace_name='local'
 ;;   keyspace_name  | table_name     | column_name | clustering_order | column_name_bytes  | kind          | position | type
@@ -72,36 +70,36 @@
 
 
 (defmulti coerce
-  (fn [table-name column-name]
+  (fn [table-name column-name _]
     ((types-id table-name column-name) system-schema-types)))
 
 
-(defmethod coerce :bigint [x]
-  (-> x util/numberize long))
+(defmethod coerce :bigint [_ _ value]
+  (-> value util/numberize long))
 
 
-(defmethod coerce :double [x]
-  (-> x util/numberize double))
+(defmethod coerce :double [_ _ value]
+  (-> value util/numberize double))
 
 
-(defmethod coerce :float [x]
-  (-> x util/numberize float))
+(defmethod coerce :float [_ _ value]
+  (-> value util/numberize float))
 
 
-(defmethod coerce :varint [x]
-  (-> x util/numberize int))
+(defmethod coerce :varint [_ _ value]
+  (-> value util/numberize int))
 
 
-(defmethod coerce :decimal [x]
-  (-> x util/numberize double))
+(defmethod coerce :decimal [_ _ value]
+  (-> value util/numberize double))
 
 
-(defmethod coerce :boolean [x]
-  (boolean x))
+(defmethod coerce :boolean [_ _ value]
+  (boolean value))
 
 
-(defmethod coerce :default [x]
-  (str x))
+(defmethod coerce :default [_ _ value]
+  (str value))
 
 
 (defn table [system-schema-columns table-name]
@@ -112,9 +110,10 @@
   (filter #(= (:kind %) "partition_key") system-schema-columns))
 
 
-(defn query-data [table-name params]
-  (let [pks   (-> system-schema-columns (table table-name) partition-keys)
-        query (select-data table-name pks params)]
+(defn query-data [table-name parameters]
+  (let [pks    (-> system-schema-columns (table table-name) partition-keys)
+        params (reduce-kv (fn [m k v] (assoc m k (coerce table-name k v))) {} parameters)
+        query  (select-data table-name pks params)]
     (alia/execute db/default-session query)))
 
 
