@@ -71,7 +71,7 @@
 
 (defmulti coerce
   (fn [table-name column-name _]
-    ((types-id table-name column-name) system-schema-types)))
+    ((types-id (name table-name) (name column-name)) system-schema-types)))
 
 
 (defmethod coerce :bigint [_ _ value]
@@ -110,9 +110,13 @@
   (filter #(= (:kind %) "partition_key") system-schema-columns))
 
 
+(defn coerce-parameters [table-name parameters]
+  (reduce-kv (fn [m k v] (assoc m k (coerce table-name k v))) {} parameters))
+
+
 (defn query-data [table-name parameters]
   (let [pks    (-> system-schema-columns (table table-name) partition-keys)
-        params (reduce-kv (fn [m k v] (assoc m k (coerce table-name k v))) {} parameters)
+        params (coerce-parameters table-name parameters)
         query  (select-data table-name pks params)]
     (alia/execute db/default-session query)))
 

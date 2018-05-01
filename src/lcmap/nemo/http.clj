@@ -167,8 +167,16 @@
     (.writeString generator (Base64/encodeBase64String copy))))
 
 
+(defn inet-encoder
+  "Represent java.net.Inet4Address as java.lang.String"
+  [^java.net.InetAddress address ^com.fasterxml.jackson.core.JsonGenerator generator]
+  (log/trace "encoding inet address")
+  (.writeString generator (. address getHostName)))
+
+
 (mount/defstate json-encoders
   :start (do
+           (json-gen/add-encoder java.net.InetAddress inet-encoder)
            (json-gen/add-encoder org.joda.time.DateTime iso8601-encoder)
            (json-gen/add-encoder java.nio.HeapByteBuffer base64-encoder)))
 
