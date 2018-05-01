@@ -1,0 +1,29 @@
+language: clojure
+
+jdk:
+- openjdk8
+
+services:
+  - docker
+
+sudo: required
+
+env:
+  global:
+  - COMMIT=${TRAVIS_COMMIT::8}
+  - DB_HOST="localhost"
+  - DB_KEYSPACE="nemo_test"
+  - HTTP_PORT="5757"
+
+before_install:
+  - sudo sysctl -w vm.max_map_count=262144
+  - docker-compose -f resources/docker-compose-travis.yml nemo_cassandra up -d
+  - sudo apt-get update -qq
+
+after_success:
+  - ./bin/build
+
+notifications:
+  slack:
+    rooms:
+      - lcmap:UTqlh9PfPVomfpli10WKyZoh#cicd
