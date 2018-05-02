@@ -9,24 +9,20 @@
       (is (every? true?  (map :ok (map ok? good))))
       (is (every? false? (map :ok (map ok? bad)))))))
 
-
 (deftest string->vector-test
   (testing "testing string->vector"
     (is (= ["one" "two" "three"] (string->vector "one,two,three")))
     (is (nil? (string->vector nil)))))
-
 
 (deftest nil-kv?-test
   (testing "testing nil-kv?"
     (is (-> {:a nil} nil-kv? :a true?))
     (is (-> {:a 123} nil-kv? :a false?))))
 
-
 (deftest with-except-test
   (testing "testing with-except"
     (is (true? (-> {:ok true} with-except :ok)))
     (is (thrown? Exception (-> {:ok false} with-except)))))
-
 
 (deftest alia-test
   (testing "testing alia configuration"

@@ -9,23 +9,18 @@
             [qbits.alia :as alia]
             [qbits.hayt :as hayt]))
 
-
 (defn intval [x]
   (map #(-> % char int) x))
-
 
 (defn str->int? [x]
   (try
     (do (. Integer parseInt x) true)
     (catch Exception e false)))
 
-
 (defn str->int [x]
   (. Integer parseInt x))
 
-
 (defmulti ascii? type)
-
 
 (defmethod ascii? java.lang.String [s]
   (let [nums (into #{} (range 0 128))
@@ -33,14 +28,11 @@
     (and (< 0 (count vals))
          (clojure.set/subset? vals nums))))
 
-
 (defmethod ascii? nil [s]
   true)
 
-
 (defmethod ascii? :default [s]
   false)
-
 
 (defmulti ipv4? type)
 
@@ -52,10 +44,8 @@
     (and (= 4 (count octets))
          (every? true? (map valid? octets)))))
 
-         
 (defmethod ipv4? :default [s]
   false)
-
 
 (def INT_MIN     (* Integer/MIN_VALUE))
 (def INT_MAX     (* Integer/MAX_VALUE))
@@ -69,7 +59,6 @@
 (def byte-gen #(spec/gen (spec/int-in 0 256)))
 (def inet-gen #(gen/fmap (fn [[a b c d]] (format "%s.%s.%s.%s" a b c d))
                          (gen/tuple (byte-gen) (byte-gen) (byte-gen) (byte-gen))))
-
 
 (spec/def ::bigint (spec/int-in BIGINT_MIN BIGINT_MAX))
 (spec/def ::timestamp pos-int?)
@@ -90,7 +79,7 @@
 (spec/def ::map  (spec/map-of string? string?))
 (spec/def ::list (spec/every string? :kind list?))
 (spec/def ::nil nil?)
-  
+
 (spec/def ::pk1 ::bigint)
 (spec/def ::pk2 ::bigint)
 (spec/def ::pk3 ::timestamp)
@@ -109,17 +98,15 @@
 (spec/def ::f13 ::set)
 (spec/def ::f14 ::map)
 (spec/def ::f15 ::list)
-  
+
 (spec/def :unq/table (spec/keys :req-un [::pk1 ::pk2 ::pk3 ::f1 ::f2 ::f3 ::f4 ::f5 ::f6 ::f7 ::f8
                                          ::f9 ::f10 ::f11 ::f12 ::f13 ::f14 ::f15]))
-
 
 (defn create-keyspace [keyspace]
   (hayt/create-keyspace (keyword keyspace)
                         (hayt/if-exists false)
                         (hayt/with {:replication {"class" "SimpleStrategy" "replication_factor" "1"}})))
 
-                                    
 (defn create-table [name]
   (hayt/create-table (keyword name)
                      (hayt/if-exists false)
@@ -145,21 +132,16 @@
                      (hayt/with {:compression {"sstable_compression" "LZ4Compressor"}
                                  :compaction  {"class" "LeveledCompactionStrategy"}})))
 
-                                                                                        
 (defmulti insert-table-data (fn [table data] (type data)))
-
 
 (defmethod insert-table-data clojure.lang.PersistentHashMap [table data]
   (->> data (hayt/values) (hayt/insert (keyword table))))
 
-
 (defmethod insert-table-data clojure.lang.PersistentVector [table data]
   (vector (map #(insert-table-data table %) data)))
 
-
 (defn drop-keyspace [keyspace]
   (hayt/drop-keyspace keyspace))
-
 
 (defn random-table-data
   ([]
@@ -167,9 +149,7 @@
   ([rows]
    (into [] (repeatedly rows random-table-data))))
 
-
 (def keyspace "nemo_test")
-
 
 (defn connect []
   (let [cfg      (config/checked-environment)
@@ -180,7 +160,6 @@
      :tables   tables
      :cluster  cluster
      :session  session}))
-
 
 (defn init []
   (let [db       (connect)
@@ -215,7 +194,6 @@
         (alia/shutdown session)
         (alia/shutdown cluster)
         (log/debugf "alia connection shut down")))))
-
 
 (defn nuke []
   (let [db      (connect)

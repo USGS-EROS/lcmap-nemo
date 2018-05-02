@@ -12,7 +12,6 @@
   (let [port (-> (config/checked-environment) :http-port Integer/parseInt)]
     (str (java.net.URL. (java.net.URL. "http" "localhost" port "/") path))))
 
-
 (defn try-decode
   "Attempt to decode body as JSON, but leave it be otherwise."
   [body]
@@ -22,7 +21,6 @@
       body)
     (catch java.lang.RuntimeException ex
       body)))
-
 
 (defn go-fish
   "Helper function for integration tests."

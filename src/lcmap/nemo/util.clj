@@ -2,12 +2,9 @@
   "Miscellaneous support functions."
   (:require [clojure.tools.logging :as log]
             [clojure.spec.alpha :as spec]
-            [org.httpkit.client :as http]
             [mount.core])
   (:import  [org.joda.time DateTime Interval DateTimeZone]
             [java.util TimeZone]))
-
-(set! *warn-on-reflection* true)
 
 ;; The time zone is set explicitly for both the JVM and Joda to avoid
 ;; conditions where Joda uses previously cached values; setting the
@@ -20,7 +17,7 @@
 
 
 (defn add-shutdown-hook
-  ""
+  "Trigger mount component shutdown on JVM shutdown"
   []
   (log/debug "register shutdown handler")
   (.addShutdownHook (java.lang.Runtime/getRuntime)
@@ -144,7 +141,7 @@
 
 
 (defn check!
-  ""
+  "conforms Clojure spec parameters"
   [spec params]
   (or (some->> (spec/explain-data spec params)
                (ex-info "validation error")

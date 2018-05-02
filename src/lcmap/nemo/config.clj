@@ -6,23 +6,17 @@
   | ENV                     | Description                             |
   | --------------          | ----------------------------------------|
   | `HTTP_PORT`             | HTTP listener port                      |
-  | `DB_HOST`               | Cassandra node (just one)               |
+  | `DB_HOST`               | Cassandra node                          |
   | `DB_USER`               | Cassandra username                      |
   | `DB_PASS`               | Cassandra password                      |
   | `DB_PORT`               | Cassandra cluster port                  |
   | `DB_KEYSPACE`           | Cassandra keyspace name                 |
   | `DB_TABLES`             | Cassandra tables to expose as resources |
-  ' `LOAD_BALANCING_POLICY` | Cassandra loadbalancing policy          |
   "
   (:require [clojure.pprint :refer [*print-pretty*]]
             [clojure.tools.logging :as log]
             [environ.core :refer [env]]
             [qbits.alia.policy.load-balancing :as lb]))
-
-
-(set! *warn-on-reflection* true)
-
-(def load-balancing-policies {:round-robin-policy lb/round-robin-policy})
 
 
 (defn string->vector
@@ -42,6 +36,7 @@
 
 
 (defn environment
+  "return the environment map for nemo"
   []
   {:db-host               (-> env :db-host)
    :db-user               (-> env :db-user)
@@ -50,11 +45,12 @@
    :db-keyspace           (-> env :db-keyspace)
    :db-tables             (-> env :db-tables string->vector)
    :http-port             (-> env :http-port)
-   :load-balancing-policy (:round-robin-policy load-balancing-policies)
+   :load-balancing-policy lb/round-robin-policy
    :consistency           :quorum})
 
 
 (defn ok?
+  "checks environment for nil values"
   [e]
   (let [missing (keys (filter #(true? (second %)) (nil-kv? e)))
         message (format "Missing environment variables: %s" missing)]
@@ -64,6 +60,7 @@
 
 
 (defn with-except
+  "checks state of environment and raises an exception is not ok"
   [e]
   (if (:ok e)
     e
@@ -72,11 +69,13 @@
 
 
 (defn checked-environment
+  "returns environment map or raises exception if there are missing values"
   []
   (-> (environment) ok? with-except))
 
 
 (defn alia
+  "alia shaped configuration"
   [e]
   {:contact-points        (-> e :db-host string->vector)
    :credentials           {:user (:db-user e) :password (:db-pass e)}

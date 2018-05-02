@@ -32,7 +32,7 @@
   :plugins [[lein-environ "1.1.0"]]
   :profiles {:dev     {:resource-paths ["dev" "test"]}
              :repl    {:resource-paths ["dev" "test"]
-		       :dependencies [[cider/cider-nrepl "0.15.1"]
+                       :dependencies [[cider/cider-nrepl "0.15.1"]
                                       [org.slf4j/slf4j-log4j12 "1.7.21"]]}
              :test    {:resource-paths ["test" "test/resources"]}
              :uberjar {:omit-source true
