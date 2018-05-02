@@ -18,7 +18,6 @@
             [environ.core :refer [env]]
             [qbits.alia.policy.load-balancing :as lb]))
 
-
 (defn string->vector
   "Split string on comma into vector"
   [s]
@@ -28,12 +27,10 @@
          (map clojure.string/trim)
          (vec))))
 
-
 (defn nil-kv?
   "presents a sequence of [:key value] in terms of {:key (nil? value)}"
   [kv]
   (reduce-kv (fn [m k v] (assoc m k (nil? v))) {} kv))
-
 
 (defn environment
   "return the environment map for nemo"
@@ -48,7 +45,6 @@
    :load-balancing-policy lb/round-robin-policy
    :consistency           :quorum})
 
-
 (defn ok?
   "checks environment for nil values"
   [e]
@@ -58,7 +54,6 @@
       (merge e {:ok true})
       (merge e {:ok false :message message}))))
 
-
 (defn with-except
   "checks state of environment and raises an exception is not ok"
   [e]
@@ -67,12 +62,10 @@
     (do (log/fatal (:message e))
         (-> e :message str Exception. throw))))
 
-
 (defn checked-environment
   "returns environment map or raises exception if there are missing values"
   []
   (-> (environment) ok? with-except))
-
 
 (defn alia
   "alia shaped configuration"

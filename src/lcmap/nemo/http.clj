@@ -18,8 +18,6 @@
            [org.apache.commons.codec.binary Base64]
            [com.fasterxml.jackson.core.JsonGenerator]))
 
-(set! *warn-on-reflection* true)
-
 ;; # Overview
 ;;
 ;; This namespace provides functions that produce responses
@@ -44,36 +42,29 @@
   [req]
   {:status 200 :body ["Nemo loves Cassandra."]})
 
-
 (defmulti get-partition
   (fn [table-name request]
     (-> request :params empty?)))
 
-
-(defmethod get-partition true [table-name _]
+(defmethod get-partition true
+  [table-name _]
   (log/debugf (format "GET %s" table-name))
   (let [results (tables/query-partition-keys table-name)]
     {:status 200 :body results}))
 
-
-(defmethod get-partition false [table-name request]
+(defmethod get-partition false
+  [table-name request]
   (log/debugf (format "GET %s %s" table-name (:params request)))
   (let [results (tables/query-data table-name (:params request))]
     {:status 200 :body results}))
 
-
 (defn restrict [] nil)
-
-
-(defn coerce [] nil)
-
 
 (defn healthy
   "Handler for checking application health."
   [request]
   (log/debug "GET health")
   {:status 200 :body {:healthy true}})
-
 
 ;; ## Routes
 ;;
@@ -88,19 +79,11 @@
     (compojure/GET "/healthy" [] (healthy request))
     (compojure/GET "/:table" [table] (get-partition table request))))
 
-
-;;    (doseq [table (:db-tables (config/checked-environment))]
-;;      (let [route (format "/%s" table)]
-;;        (log/debugf "Creating table-route:%s" route)
-;;        (compojure/GET route [] (get-partition table request))))))
-
-
 ;; ## Middleware
 ;;
 ;; The only custom middleware provided by Nemo is an exception
 ;; handler that produces a generic error message.
 ;;
-
 
 (defn cause-messages
   "Produce a list of messages for a Throwable's cause stack trace."
@@ -110,7 +93,6 @@
        (take-while some?)
        (map (fn [^Throwable t] (.getMessage t)))
        (into [])))
-
 
 (defn wrap-exception-handling
   "Catch otherwise unhandled exceptions."
@@ -122,7 +104,6 @@
         (let [messages (cause-messages ex)]
           (log/errorf "exception: %s" messages)
           {:status 500 :body (json/encode {:errors messages})})))))
-
 
 ;; ## Handler
 ;;
@@ -143,10 +124,9 @@
       (wrap-exception-handling)
       (ring-cors/wrap-cors #".*")))
 
-
 ;; ## Encoders
 ;;
-;; These functions simplify the converstion of values that do
+;; These functions simplify the conversion of values that do
 ;; not have a default way of producing a serialized string.
 ;;
 
@@ -155,7 +135,6 @@
   [^org.joda.time.DateTime date-time ^com.fasterxml.jackson.core.JsonGenerator generator]
   (log/trace "encoding DateTime to ISO8601")
   (.writeString generator (str date-time)))
-
 
 (defn base64-encoder
   "Base64 encode a byte-buffer, usually raster data from Cassandra."
@@ -166,20 +145,17 @@
     (.get buffer copy)
     (.writeString generator (Base64/encodeBase64String copy))))
 
-
 (defn inet-encoder
   "Represent java.net.Inet4Address as java.lang.String"
   [^java.net.InetAddress address ^com.fasterxml.jackson.core.JsonGenerator generator]
   (log/trace "encoding inet address")
   (.writeString generator (. address getHostName)))
 
-
 (mount/defstate json-encoders
   :start (do
            (json-gen/add-encoder java.net.InetAddress inet-encoder)
            (json-gen/add-encoder org.joda.time.DateTime iso8601-encoder)
            (json-gen/add-encoder java.nio.HeapByteBuffer base64-encoder)))
-
 
 ;; ## HTTP Server
 ;;
@@ -189,17 +165,16 @@
 
 (declare http-server)
 
-
-(defn http-start []
+(defn http-start
+  []
   (let [port (-> (config/checked-environment) :http-port Integer/parseInt)]
     (log/debugf "start http server on port %s" port)
     (server/run-server #'app {:port port})))
 
-
-(defn http-stop []
+(defn http-stop
+  []
   (log/debug "stop http server")
   (http-server))
-
 
 (mount/defstate http-server
   :start (http-start)

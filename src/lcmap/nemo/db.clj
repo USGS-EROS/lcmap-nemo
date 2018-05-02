@@ -7,15 +7,12 @@
             [lcmap.nemo.config :as config])
   (:import org.joda.time.DateTime))
 
-(set! *warn-on-reflection* true)
-
 ;; ## Overview
 ;;
 ;; This namespace defines the state and behavior of connections to
 ;; the Cassandra cluster. It relies on values `lcmap.nemo.config`
 ;; for specific values such as hostnames and credentials.
 ;;
-
 
 ;; ## Joda Support
 ;;
@@ -25,12 +22,10 @@
 (extend-protocol default-codec/Encoder
   org.joda.time.DateTime (encode [x] (.toDate x)))
 
-
 ;; ## Declarations
 ;;
 
 (declare db-cluster default-session system-schema-session)
-
 
 ;; ## db-cluster
 ;;
@@ -46,18 +41,15 @@
     (log/debugf "start db cluster connection")
     (alia/cluster db-cfg)))
 
-
 (defn db-cluster-stop
   "Shutdown cluster connection."
   []
   (log/debugf "stop db cluster connection")
   (alia/shutdown db-cluster))
 
-
 (defstate db-cluster
   :start (db-cluster-start)
   :stop  (db-cluster-stop))
-
 
 ;; ## database sessions
 ;;
@@ -75,18 +67,15 @@
   (log/debugf "start default db session")
   (alia/connect db-cluster (:db-keyspace (config/checked-environment))))
 
-
 (defn default-session-stop
   "Close Cassandra session."
   []
   (log/debugf "stop default db session")
   (alia/shutdown default-session))
 
-
 (defstate default-session
   :start (default-session-start)
   :stop  (default-session-stop))
-
 
 (defn system-schema-session-start
   "Create session that uses the system_schema keyspace."
@@ -94,13 +83,11 @@
   (log/debugf "start system_schema db session")
   (alia/connect db-cluster "system_schema"))
 
-
 (defn system-schema-session-stop
   "Close Cassandra system_schema session."
   []
   (log/debugf "stop system_schema db session")
   (alia/shutdown system-schema-session))
-
 
 (defstate system-schema-session
   :start (system-schema-session-start)

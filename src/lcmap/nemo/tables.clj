@@ -25,42 +25,47 @@
 ;;   local |     table2 |      source |             none |     0x736f75726365 |       regular |       -1 |      text
 
 
-(defn where [partition-keys params]
+(defn where
+  "Construct where clause for selecting data from tables"
+  [partition-keys params]
   (let [query-keys   (map (fn [pk] (-> (:column_name pk) keyword)) partition-keys)
         query-params (into [] (select-keys params query-keys))]
     (vec (map (fn [x] (into [=] x)) query-params))))
 
-
-(defn select-keyspace []
+(defn select-keyspace
+  "Query for system_schema.columns entries in the configured keyspace"
+  []
   {:select :columns
    :columns :*
    :where [[= :keyspace_name (:db-keyspace (config/checked-environment))]]})
 
-
-(defn select-data [table-name partition-keys params]
+(defn select-data
+  "Query to select data partitions"
+  [table-name partition-keys params]
   {:select (keyword table-name)
    :columns :*
    :where (where partition-keys params)})
 
-
-(defn select-partition-keys [table-name partition-keys]
+(defn select-partition-keys
+  "Query to select all partition key values"
+  [table-name partition-keys]
   {:select  (keyword table-name)
    :columns (map #(:column_name %) partition-keys)})
-
 
 (mount/defstate system-schema-columns
   :start (do
            (log/debugf "loading system_schema.columns")
            (alia/execute db/system-schema-session (select-keyspace))))
 
-
-(defn types-id [table-name column-name]
+(defn types-id
+  "Construct the system-schema-types hashmap lookup id"
+  [table-name column-name]
   (keyword (str table-name "/" column-name)))
 
-
-(defn types-entry [row]
+(defn types-entry
+  "Construct a system-schema-types entry"
+  [row]
   {(types-id (:table_name row) (:column_name row)) (keyword (:type row))})
-
 
 (mount/defstate system-schema-types
   "Namespace qualified keyword :table/column to column type"
@@ -68,60 +73,65 @@
            (log/debugf "creating system_schema map")
            (apply merge (map types-entry system-schema-columns))))
 
-
 (defmulti coerce
+  "Multimethod to coerce strings to types expected by Cassandra"
   (fn [table-name column-name _]
     ((types-id (name table-name) (name column-name)) system-schema-types)))
 
-
-(defmethod coerce :bigint [_ _ value]
+(defmethod coerce :bigint
+  [_ _ value]
   (-> value util/numberize long))
 
-
-(defmethod coerce :double [_ _ value]
+(defmethod coerce :double
+  [_ _ value]
   (-> value util/numberize double))
 
-
-(defmethod coerce :float [_ _ value]
+(defmethod coerce :float
+  [_ _ value]
   (-> value util/numberize float))
 
-
-(defmethod coerce :varint [_ _ value]
+(defmethod coerce :varint
+  [_ _ value]
   (-> value util/numberize int))
 
-
-(defmethod coerce :decimal [_ _ value]
+(defmethod coerce :decimal
+  [_ _ value]
   (-> value util/numberize double))
 
-
-(defmethod coerce :boolean [_ _ value]
+(defmethod coerce :boolean
+  [_ _ value]
   (boolean value))
 
-
-(defmethod coerce :default [_ _ value]
+(defmethod coerce :default
+  [_ _ value]
   (str value))
 
-
-(defn table [system-schema-columns table-name]
+(defn table
+  "Return entries for table-name from system-schema-columns"
+  [system-schema-columns table-name]
   (filter #(= (:table_name %) table-name) system-schema-columns))
 
-
-(defn partition-keys [system-schema-columns]
+(defn partition-keys
+  "Return all partition keys from system-schema-columns"
+  [system-schema-columns]
   (filter #(= (:kind %) "partition_key") system-schema-columns))
 
-
-(defn coerce-parameters [table-name parameters]
+(defn coerce-parameters
+  "Coerce a map of parameters to proper Cassandra types"
+  [table-name parameters]
   (reduce-kv (fn [m k v] (assoc m k (coerce table-name k v))) {} parameters))
 
-
-(defn query-data [table-name parameters]
+(defn query-data
+  "Select a partition of data from a Cassandra table"
+  [table-name parameters]
   (let [pks    (-> system-schema-columns (table table-name) partition-keys)
         params (coerce-parameters table-name parameters)
         query  (select-data table-name pks params)]
     (alia/execute db/default-session query)))
 
-
-(defn query-partition-keys [table-name]
+(defn query-partition-keys
+  "Select all partition keys/values from a Cassandra table"
+  [table-name]
   (let [pks (-> system-schema-columns (table table-name) partition-keys)
         query (select-partition-keys table-name pks)]
     (alia/execute db/default-session query)))

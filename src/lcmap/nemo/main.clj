@@ -9,8 +9,6 @@
             [lcmap.nemo.util])
   (:gen-class))
 
-(set! *warn-on-reflection* true)
-
 (defn -main
   "This is the entry-point used to start a Nemo server.
 

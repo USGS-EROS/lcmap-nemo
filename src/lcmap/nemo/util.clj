@@ -15,14 +15,12 @@
 
 (DateTimeZone/setDefault (DateTimeZone/forTimeZone (TimeZone/getTimeZone "GMT")))
 
-
 (defn add-shutdown-hook
   "Trigger mount component shutdown on JVM shutdown"
   []
   (log/debug "register shutdown handler")
   (.addShutdownHook (java.lang.Runtime/getRuntime)
                     (Thread. #(mount.core/stop) "shutdown-handler")))
-
 
 (defn add-usr-path
   ""
@@ -35,7 +33,6 @@
          (finally
            (.setAccessible field false)))))
 
-
 (defn get-usr-path
   ""
   [& paths]
@@ -45,26 +42,21 @@
          (finally
            (.setAccessible field false)))))
 
-
 (defn amend-usr-path
   ""
   [more-paths]
   (apply add-usr-path more-paths))
-
 
 (defmulti numberize
   "Converts a string to a number or nil.  If the string contains a mix of
    number and character data, returns "
   (fn [n] (type n)))
 
-
 (defmethod numberize :default [n]
   nil)
 
-
 (defmethod numberize Number [number]
   number)
-
 
 (defmethod numberize String [string]
   (let [number-format (java.text.NumberFormat/getInstance)]
@@ -72,14 +64,11 @@
       (.parse number-format string)
       (catch java.text.ParseException ex :clojure.spec.alpha/invalid))))
 
-
 (def numberizer (spec/conformer numberize))
-
 
 (defmulti intervalize
   ""
   (fn [n] (type n)))
-
 
 (defmethod intervalize java.lang.String
   [interval]
@@ -87,11 +76,9 @@
     (Interval/parse interval)
     (catch java.lang.IllegalArgumentException ex :clojure.spec.alpha/invalid)))
 
-
 (defmethod intervalize org.joda.time.Interval
   [interval]
   interval)
-
 
 (defn interval? [d]
   (try
@@ -99,14 +86,11 @@
     true
     (catch java.lang.IllegalArgumentException ex nil)))
 
-
 (def intervalizer (spec/conformer intervalize))
-
 
 (defmulti instantize
   ""
   (fn [i] (type i)))
-
 
 (defmethod instantize java.lang.String
   [instant]
@@ -119,26 +103,21 @@
          (.toDate))
     (catch java.lang.IllegalArgumentException ex :clojure.spec.alpha/invalid)))
 
-
 (defmethod instantize org.joda.time.DateTime
   [^org.joda.time.DateTime instant]
   (.toDate instant))
 
-
 (defmethod instantize java.util.Date
   [^java.util.Date instant]
   instant)
-
 
 (defn re-grouper
   [^java.util.regex.Matcher matcher keys]
   (if (.matches matcher)
     (into {} (map (fn [k] [k (.group matcher (name k))])) keys)))
 
-
 (defn re-mapper [re ks s]
   (re-grouper (re-matcher re s) ks))
-
 
 (defn check!
   "conforms Clojure spec parameters"
@@ -147,7 +126,6 @@
                (ex-info "validation error")
                (throw))
       (spec/conform spec params)))
-
 
 (defn byte-buffer-copy
   ""
