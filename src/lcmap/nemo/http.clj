@@ -43,6 +43,7 @@
   {:status 200 :body ["Nemo loves Cassandra."]})
 
 (defmulti get-partition
+  "Multimethod to retrieve either all partition keys or a partition of data"
   (fn [table-name request]
     (-> request :params empty?)))
 
@@ -166,12 +167,14 @@
 (declare http-server)
 
 (defn http-start
+  "Start the http server"
   []
   (let [port (-> (config/checked-environment) :http-port Integer/parseInt)]
     (log/debugf "start http server on port %s" port)
     (server/run-server #'app {:port port})))
 
 (defn http-stop
+  "Stop the http server"
   []
   (log/debug "stop http server")
   (http-server))
