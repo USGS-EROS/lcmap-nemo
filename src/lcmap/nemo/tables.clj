@@ -52,10 +52,16 @@
   {:select  (keyword table-name)
    :columns (map #(:column_name %) partition-keys)})
 
+(defn restrict
+  "Restrict system-schema-columns to supplied table names only"
+  [system-schema-columns tables]
+  (filter #(some #{(:table_name %)} tables) system-schema-columns))
+
 (mount/defstate system-schema-columns
   :start (do
            (log/debugf "loading system_schema.columns")
-           (alia/execute db/system-schema-session (select-keyspace))))
+           (-> (alia/execute db/system-schema-session (select-keyspace))
+               (restrict (-> (config/checked-environment) :db-tables)))))
 
 (defn types-id
   "Construct the system-schema-types hashmap lookup id"
