@@ -2,20 +2,20 @@
   (:require [clojure.test :refer :all]
             [lcmap.nemo.tables :as tables]))
 
-(deftest table-test
-  (testing "testing tables/table"
-    (let [data [{:table_name "one"} {:table_name "two"} {:table_name "three"}]]
-      (is (= "one"   (:table_name (first (tables/table data "one")))))
-      (is (= "two"   (:table_name (first (tables/table data "two")))))
-      (is (= "three" (:table_name (first (tables/table data "three")))))
-      (is (= 1 (count (tables/table data "one"))))
-      (is (= 1 (count (tables/table data "two"))))
-      (is (= 1 (count (tables/table data "three")))))))
+;(deftest table-test
+;  (testing "testing tables/table"
+;    (let [data [{:table_name "one"} {:table_name "two"} {:table_name "three"}]]
+;      (is (= "one"   (:table_name (first (tables/table data "one")))))
+;      (is (= "two"   (:table_name (first (tables/table data "two")))))
+;      (is (= "three" (:table_name (first (tables/table data "three")))))
+;      (is (= 1 (count (tables/table data "one"))))
+;      (is (= 1 (count (tables/table data "two"))))
+;      (is (= 1 (count (tables/table data "three")))))))
 
-(deftest partition-keys-test
-  (testing "testing tables/partition-keys"
-    (is (= 1 (count (tables/partition-keys [{:kind "partition_key"}]))))
-    (is (= 0 (count (tables/partition-keys [{:kind "something_not"}]))))))
+;(deftest partition-keys-test
+;  (testing "testing tables/partition-keys"
+;    (is (= 1 (count (tables/partition-keys [{:kind "partition_key"}]))))
+;    (is (= 0 (count (tables/partition-keys [{:kind "something_not"}]))))))
 
 (deftest where-test
   (testing "testing tables/where"

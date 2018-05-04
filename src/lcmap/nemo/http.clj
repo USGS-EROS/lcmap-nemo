@@ -36,30 +36,48 @@
 ;; In order to avoid duplication, resources that provide the same
 ;; behavior without changing names have been avoided.
 ;;
+(defn restrict [] nil)
 
-(defn get-base
-  "Build response for base URL."
+(defn get-tables
+  "Build response for tables URL."
   [req]
-  {:status 200 :body ["Nemo loves Cassandra."]})
+  {:status 200 :body {"tables" (vals (tables/available))}})
 
 (defmulti get-partition
-  "Multimethod to retrieve either all partition keys or a partition of data"
+  "Dispatch to get-partition handlers"
   (fn [table-name request]
-    (-> request :params empty?)))
+    (let [table  (keyword table-name)
+          params (:params request)]
+    (cond
+      (nil? (table (tables/available)))           :missing-table
+      (empty? params)                             :partition-keys
+      (not (tables/partition-keys? table params)) :missing-params
+      :else                                       :partition-data))))
 
-(defmethod get-partition true
+(defmethod get-partition :missing-table
+  [table-name request]
+  (log/debugf (format "GET %s (not found)" table-name))
+  {:status 404 :body [(str table-name " not found")]})
+
+(defmethod get-partition :partition-keys
   [table-name _]
   (log/debugf (format "GET %s" table-name))
   (let [results (tables/query-partition-keys table-name)]
     {:status 200 :body results}))
 
-(defmethod get-partition false
+(defmethod get-partition :missing-params
+  [table-name request]
+  (let [table  (keyword table-name)
+        params (into [] (map #(name %) (tables/partition-keys table)))
+        msg    (str "required parameters:" params)]
+  (log/debugf (format "GET %s " table-name " (missing parameters)"))
+  {:status 400 :body [msg]}))
+                      
+(defmethod get-partition :partition-data
   [table-name request]
   (log/debugf (format "GET %s %s" table-name (:params request)))
   (let [results (tables/query-data table-name (:params request))]
     {:status 200 :body results}))
-
-(defn restrict [] nil)
 
 (defn healthy
   "Handler for checking application health."
@@ -76,7 +94,7 @@
 
 (compojure/defroutes routes
   (compojure/context "/" request
-    (compojure/GET "/" [] (get-base request))
+    (compojure/GET "/" [] (get-tables request))
     (compojure/GET "/healthy" [] (healthy request))
     (compojure/GET "/:table" [table] (get-partition table request))))
 
