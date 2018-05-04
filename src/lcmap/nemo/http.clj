@@ -36,7 +36,6 @@
 ;; In order to avoid duplication, resources that provide the same
 ;; behavior without changing names have been avoided.
 ;;
-(defn restrict [] nil)
 
 (defn get-tables
   "Build response for tables URL."
