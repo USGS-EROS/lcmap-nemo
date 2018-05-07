@@ -8,11 +8,11 @@
 
 (use-fixtures :once fixtures/all-fixtures)
 
-(deftest get-base-url-test
-  (testing "it exists but it's fishy"
+(deftest get-table-url-test
+  (testing "testing get-table resource"
     (let [resp (shared/go-fish {:url ""})]
       (is (= 200 (:status resp)))
-      (is (= ["Nemo loves Cassandra."] (-> resp :body))))))
+      (is (=  {:tables ["one" "two"]} (-> resp :body))))))
 
 (deftest get-healthy-test
   (testing "it looks good right now"

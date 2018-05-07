@@ -34,11 +34,13 @@
 
 (defn select-keyspace
   "Query for system_schema.columns entries in the configured keyspace"
-  []
-  {:select :columns
-   :columns :*
-   :where [[= :keyspace_name (:db-keyspace (config/checked-environment))]]})
-
+  ([e]
+   {:select :columns
+    :columns :*
+    :where [[= :keyspace_name (:db-keyspace e)]]})
+  ([]
+  (-> (config/checked-environment) select-keyspace)))
+  
 (defn select-data
   "Query to select data partitions"
   [table partition-keys params]
