@@ -13,8 +13,7 @@
   | `DB_KEYSPACE`           | Cassandra keyspace name                 |
   | `DB_TABLES`             | Cassandra tables to expose as resources |
   "
-  (:require [clojure.pprint :refer [*print-pretty*]]
-            [clojure.tools.logging :as log]
+  (:require [clojure.tools.logging :as log]
             [environ.core :refer [env]]
             [qbits.alia.policy.load-balancing :as lb]))
 
@@ -55,7 +54,7 @@
       (merge e {:ok false :message message}))))
 
 (defn with-except
-  "checks state of environment and raises an exception is not ok"
+  "checks state of environment and raises an exception if not ok"
   [e]
   (if (:ok e)
     e

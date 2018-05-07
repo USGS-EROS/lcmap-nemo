@@ -16,10 +16,7 @@
    to configure the app."
   [& args]
   (try
-    ;; This needs to happen before mount states are started
-    ;; because they expect keyspaces and tables to exist.
-    (log/debug "nemo init")
-    (lcmap.nemo.setup/init)
+    
     ;; A shutdown hook gives us a way to cleanly stop mount
     ;; states.
     (log/debug "nemo add shutdown hook")

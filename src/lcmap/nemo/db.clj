@@ -58,7 +58,7 @@
 ;; object that can be used to execute queries.
 ;;
 ;; _WARNING: Do not use the same session for multiple keyspaces, functions
-;; that rely on this state expect a stable keyspace name!_
+;; that rely on states expect a stable keyspace name!_
 ;;
 
 (defn default-session-start

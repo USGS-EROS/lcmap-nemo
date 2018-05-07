@@ -150,5 +150,3 @@
         pks   (partition-keys table)
         query (select-partition-keys table pks)]
     (alia/execute db/default-session query)))
-
-

@@ -33,6 +33,7 @@
 ;; logic that 'renames' parameters; this was done to maintain
 ;; compatability with previous consumers of a similar REST API.
 ;;
+
 ;; In order to avoid duplication, resources that provide the same
 ;; behavior without changing names have been avoided.
 ;;
@@ -67,10 +68,9 @@
 (defmethod get-partition :missing-params
   [table-name request]
   (let [table  (keyword table-name)
-        params (into [] (map #(name %) (tables/partition-keys table)))
-        msg    (str "required parameters:" params)]
+        params (into [] (map #(name %) (tables/partition-keys table)))]
   (log/debugf (format "GET %s " table-name " (missing parameters)"))
-  {:status 400 :body [msg]}))
+  {:status 400 :body {"required_parameters" params}}))
                       
 (defmethod get-partition :partition-data
   [table-name request]
