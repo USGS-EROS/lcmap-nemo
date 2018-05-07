@@ -9,6 +9,12 @@
             [qbits.alia :as alia]
             [qbits.hayt :as hayt]))
 
+(def INT_MIN      (* Integer/MIN_VALUE))
+(def INT_MAX      (* Integer/MAX_VALUE))
+(def BIGINT_MIN   (* 2 INT_MIN))
+(def BIGINT_MAX   (* 2 INT_MAX))
+(def DB_ROW_COUNT 500)
+
 (defn intval [x]
   (map #(-> % char int) x))
 
@@ -46,11 +52,6 @@
 
 (defmethod ipv4? :default [s]
   false)
-
-(def INT_MIN     (* Integer/MIN_VALUE))
-(def INT_MAX     (* Integer/MAX_VALUE))
-(def BIGINT_MIN  (* 2 INT_MIN))
-(def BIGINT_MAX  (* 2 INT_MAX))
 
 ;; Create custom spec generators for types we are testing that don't have a direct generator
 ;; available
@@ -184,7 +185,7 @@
         (do
           (log/debugf (format "creating table:'%s'" t))
           (alia/execute session (create-table t))
-          (doseq [_ (range 200)]
+          (doseq [_ (range DB_ROW_COUNT)]
             (alia/execute session (insert-table-data t (random-table-data))))))
       :done
       (catch java.lang.RuntimeException cause

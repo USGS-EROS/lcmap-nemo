@@ -7,7 +7,6 @@
             [mount.core :as mount]
             [qbits.alia :as alia]
             [qbits.hayt :as hayt]))
-
 ;;   Exploits Cassandra system_schema.column to enable Compojure HTTP resource creation
 ;;
 ;;
@@ -52,7 +51,7 @@
   "Query to select all partition key values"
   [table partition-keys]
   {:select  table
-   :columns partition-keys})
+   :columns (apply hayt/distinct* partition-keys)})
 
 (defn restrict
   "Restrict system-schema-columns to supplied table names only"
@@ -74,6 +73,13 @@
                        (assoc-in a [(keyword (:table_name v))
                                     (keyword (:column_name v))] v)) {} ->maps))))
 
+(defn coerce-catch
+  [value to-type exception]
+  (let [msg (format "%s cannot be coerced to %s" value to-type)]
+    (log/warn msg)
+    (log/debug exception)
+    (throw (Exception. msg))))
+  
 (defmulti coerce
   "Multimethod to coerce strings to types expected by Cassandra"
   (fn [table column _]
@@ -81,27 +87,45 @@
   
 (defmethod coerce :bigint
   [_ _ value]
-  (-> value util/numberize long))
-
+  (try
+    (-> value util/numberize long)
+    (catch Exception e
+      (coerce-catch value :bigint e))))
+      
 (defmethod coerce :double
   [_ _ value]
-  (-> value util/numberize double))
+  (try
+    (-> value util/numberize double)
+    (catch Exception e
+      (coerce-catch value :double e))))
 
 (defmethod coerce :float
   [_ _ value]
-  (-> value util/numberize float))
+  (try
+    (-> value util/numberize float)
+    (catch Exception e
+      (coerce-catch value :float e))))
 
 (defmethod coerce :varint
   [_ _ value]
-  (-> value util/numberize int))
+  (try
+    (-> value util/numberize int)
+    (catch Exception e
+      (coerce-catch value :varint e))))
 
 (defmethod coerce :decimal
   [_ _ value]
-  (-> value util/numberize double))
+  (try
+    (-> value util/numberize double)
+    (catch Exception e
+      (coerce-catch value :decimal e))))
 
 (defmethod coerce :boolean
   [_ _ value]
-  (boolean value))
+  (try
+    (boolean value)
+    (catch Exception e
+      (coerce-catch value :boolean e))))
 
 (defmethod coerce :default
   [_ _ value]
