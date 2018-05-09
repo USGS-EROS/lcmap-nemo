@@ -3,9 +3,9 @@
             [clojure.set]
             [clojure.spec.alpha :as spec]
             [clojure.spec.gen.alpha :as gen]
-            [clojure.string :as string]
             [clojure.tools.logging :as log]
             [lcmap.nemo.config :as config]
+            [lcmap.nemo.util :as util]
             [qbits.alia :as alia]
             [qbits.hayt :as hayt]))
 
@@ -14,44 +14,6 @@
 (def BIGINT_MIN   (* 2 INT_MIN))
 (def BIGINT_MAX   (* 2 INT_MAX))
 (def DB_ROW_COUNT 500)
-
-(defn intval [x]
-  (map #(-> % char int) x))
-
-(defn str->int? [x]
-  (try
-    (do (. Integer parseInt x) true)
-    (catch Exception e false)))
-
-(defn str->int [x]
-  (. Integer parseInt x))
-
-(defmulti ascii? type)
-
-(defmethod ascii? java.lang.String [s]
-  (let [nums (into #{} (range 0 128))
-        vals (into #{} (intval s))]
-    (and (< 0 (count vals))
-         (clojure.set/subset? vals nums))))
-
-(defmethod ascii? nil [s]
-  true)
-
-(defmethod ascii? :default [s]
-  false)
-
-(defmulti ipv4? type)
-
-(defmethod ipv4? java.lang.String [s]
-  (let [octets (string/split s #"\.")
-        valid? (fn [x] (and (true? (str->int? x))
-                            (> 256 (str->int x))
-                            (< 0 (str->int x))))]
-    (and (= 4 (count octets))
-         (every? true? (map valid? octets)))))
-
-(defmethod ipv4? :default [s]
-  false)
 
 ;; Create custom spec generators for types we are testing that don't have a direct generator
 ;; available
@@ -67,11 +29,11 @@
 (spec/def ::text string?)
 (spec/def ::float float?)
 (spec/def ::double double?)
-(spec/def ::ascii (spec/with-gen ascii? gen/string-ascii))
+(spec/def ::ascii (spec/with-gen util/ascii? gen/string-ascii))
 (spec/def ::boolean boolean?)
 (spec/def ::counter int?)
 (spec/def ::decimal  (or (spec/int-in INT_MIN INT_MAX) (spec/double-in :NaN? false :infinite? false)))
-(spec/def ::inet     (spec/with-gen ipv4? inet-gen))
+(spec/def ::inet     (spec/with-gen util/ipv4? inet-gen))
 (spec/def ::timeuuid (spec/with-gen uuid/uuid? uuid-gen))
 (spec/def ::uuid     (spec/with-gen uuid/uuid? gen/uuid))
 (spec/def ::varchar string?)

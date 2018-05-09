@@ -2,6 +2,7 @@
   "Miscellaneous support functions."
   (:require [clojure.tools.logging :as log]
             [clojure.spec.alpha :as spec]
+            [clojure.string :as string]
             [mount.core])
   (:import  [org.joda.time DateTime Interval DateTimeZone]
             [java.util TimeZone]))
@@ -135,3 +136,41 @@
     (.get byte-buffer copy)
     (.rewind byte-buffer)
     copy))
+
+(defn intval [x]
+  (map #(-> % char int) x))
+
+(defn str->int? [x]
+  (try
+    (do (. Integer parseInt x) true)
+    (catch Exception e false)))
+
+(defn str->int [x]
+  (. Integer parseInt x))
+
+(defmulti ascii? type)
+
+(defmethod ascii? java.lang.String [s]
+  (let [nums (into #{} (range 0 128))
+        vals (into #{} (intval s))]
+    (and (< 0 (count vals))
+         (clojure.set/subset? vals nums))))
+
+(defmethod ascii? nil [s]
+  true)
+
+(defmethod ascii? :default [s]
+  false)
+
+(defmulti ipv4? type)
+
+(defmethod ipv4? java.lang.String [s]
+  (let [octets (string/split s #"\.")
+        valid? (fn [x] (and (true? (str->int? x))
+                            (> 256 (str->int x))
+                            (< 0 (str->int x))))]
+    (and (= 4 (count octets))
+         (every? true? (map valid? octets)))))
+
+(defmethod ipv4? :default [s]
+  false)

@@ -91,7 +91,14 @@
     (-> value util/numberize long)
     (catch Exception e
       (coerce-catch value :bigint e))))
-      
+
+(defmethod coerce :timestamp
+  [_ _ value]
+  (try
+    (-> value util/numberize int)
+    (catch Exception e
+      (coerce-catch value :timestamp e))))
+
 (defmethod coerce :double
   [_ _ value]
   (try
@@ -106,10 +113,19 @@
     (catch Exception e
       (coerce-catch value :float e))))
 
+(defmethod coerce :ascii
+  [_ _ value]
+  (try
+    (if (-> value str util/ascii?)
+      (str value)
+      (coerce-catch value
+                    :ascii
+                    (Exception. (format "%s is not ascii" value))))))
+
 (defmethod coerce :varint
   [_ _ value]
   (try
-    (-> value util/numberize int)
+    (-> value util/numberize int)6
     (catch Exception e
       (coerce-catch value :varint e))))
 
@@ -120,10 +136,19 @@
     (catch Exception e
       (coerce-catch value :decimal e))))
 
-(defmethod coerce :boolean
+(defmethod coerce :inet
   [_ _ value]
   (try
-    (boolean value)
+    (if (-> value util/ipv4?)
+      (str value)
+      (throw (Exception.)))
+      (catch Exception e
+        (coerce-catch value :inet e))))
+
+(defmethod coerce :boolean
+  [_ _ ^java.lang.String value]
+  (try
+    (Boolean/valueOf (str value))
     (catch Exception e
       (coerce-catch value :boolean e))))
 
