@@ -1,4 +1,4 @@
-(ns lcmap.nemo.table-test
+(ns lcmap.nemo.tables-test
   (:require [clj-uuid :as uuid]
             [clojure.test :refer :all]
             [lcmap.nemo.fixtures :as fixtures]
@@ -129,4 +129,29 @@
     (is (= (tables/coerce :one :f12 "123") 123))
     (is (= (tables/coerce :one :f12 "123.0") 123))
     (is (thrown? Exception (tables/coerce :one :f12 "not-a-number")))))
+
+(deftest available-test
+  (testing "testing tables/available"
+    (let [schema-map {:a nil :b nil :c nil}
+          expected   {:a "a" :b "b" :c "c"}]
+      (is (= expected (tables/available schema-map))))))
+
+(deftest partition-keys-test
+  (testing "testing tables/partition-keys"
+    (let [schema-map {:table1 {:pk1 {:kind "partition_key" :column_name "pk1"}
+                               :pk2 {:kind "partition_key" :column_name "pk2"}
+                               :sf1 {:kind "not_a_partkey" :column_name "sf1"}
+                               :sf2 {:kind "not_a_partkey" :column_name "sf2"}}}
+          expected [:pk1 :pk2]]
+      (is (= expected (tables/partition-keys schema-map :table1))))))
+
+
+(deftest partition-keys?-test
+  (testing "testing tables/partition-keys?"
+    (let [schema-map {:table1 {:pk1 {:kind "partition_key" :column_name "pk1"}
+                               :pk2 {:kind "partition_key" :column_name "pk2"}
+                               :sf1 {:kind "not_a_partkey" :column_name "sf1"}
+                               :sf2 {:kind "not_a_partkey" :column_name "sf2"}}}]
+      (is (true?  (tables/partition-keys? :table1 {:pk1 1 :pk2 2} schema-map)))
+      (is (false? (tables/partition-keys? :table1 {:pk1 1 :pk3 3} schema-map))))))
 
