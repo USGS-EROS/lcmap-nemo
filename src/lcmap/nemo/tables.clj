@@ -1,5 +1,6 @@
 (ns lcmap.nemo.tables
-  (:require [clojure.set :as s]
+  (:require [clj-uuid :as uuid]
+            [clojure.set :as s]
             [clojure.tools.logging :as log]
             [lcmap.nemo.config :as config]
             [lcmap.nemo.db :as db]
@@ -125,7 +126,7 @@
 (defmethod coerce :varint
   [_ _ value]
   (try
-    (-> value util/numberize int)6
+    (-> value util/numberize int)
     (catch Exception e
       (coerce-catch value :varint e))))
 
@@ -151,6 +152,23 @@
     (Boolean/valueOf (str value))
     (catch Exception e
       (coerce-catch value :boolean e))))
+
+(defmethod coerce :timeuuid
+  [_ _ value]
+  (if (uuid/uuid-string? value)
+    (uuid/as-uuid value)
+    (coerce-catch value
+                  :timeuuid
+                  (Exception. (format "%s is not a uuid" value)))))
+
+(defmethod coerce :uuid
+  [_ _ value]
+  (if (uuid/uuid-string? value)
+    (uuid/as-uuid value)
+    (coerce-catch value
+                  :uuid
+                  (Exception. (format "%s is not a uuid" value)))))
+
 
 (defmethod coerce :default
   [_ _ value]

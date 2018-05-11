@@ -1,5 +1,6 @@
 (ns lcmap.nemo.table-test
-  (:require [clojure.test :refer :all]
+  (:require [clj-uuid :as uuid]
+            [clojure.test :refer :all]
             [lcmap.nemo.fixtures :as fixtures]
             [lcmap.nemo.tables :as tables]))
 
@@ -108,12 +109,24 @@
     (is (thrown? Exception (tables/coerce :one :f8 "8.8.8.257")))
     (is (thrown? Exception (tables/coerce :one :f8 "not-an-ipaddr")))
     (is (thrown? Exception (tables/coerce :one :f8 12345)))
-    
-    ))
 
-    (comment
-      (spec/def ::f9  ::timeuuid)
-      (spec/def ::f10 ::uuid)
-      (spec/def ::f11 ::varchar)
-      (spec/def ::f12 ::varint))
+    ;; test timeuuid
+    (let [u (uuid/v1)]
+      (is (= (tables/coerce :one :f9 (uuid/to-string u)) u)))
+    (is (thrown? Exception (tables/coerce :one :f9 "not-a-uuid")))
+
+    ;; test uuid
+    (let [u (uuid/v1)]
+      (is (= (tables/coerce :one :f10 (uuid/to-string u)) u)))
+    (is (thrown? Exception (tables/coerce :one :f10 "not-a-uuid")))
+
+    ;; test varchar
+    (is (= (tables/coerce :one :f11 "a-random-varchar") (str "a-random-varchar")))
+    (is (= (tables/coerce :one :f11 123) (str 123)))
+
+    ;; test varint
+    (is (= (tables/coerce :one :f12 123)) 123)
+    (is (= (tables/coerce :one :f12 "123") 123))
+    (is (= (tables/coerce :one :f12 "123.0") 123))
+    (is (thrown? Exception (tables/coerce :one :f12 "not-a-number")))))
 
