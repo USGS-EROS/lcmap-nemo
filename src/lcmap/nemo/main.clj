@@ -1,6 +1,7 @@
 (ns lcmap.nemo.main
   "Start-up related functions and entry-point."
-  (:require [clojure.tools.logging :as log]
+  (:require [clojure.stacktrace :as st]
+            [clojure.tools.logging :as log]
             [mount.core]
             [lcmap.nemo.config :as config]
             [lcmap.nemo.db]
@@ -28,5 +29,5 @@
     (mount.core/start)
     (catch RuntimeException ex
       (log/fatalf "nemo died during startup")
-      (println (.getCause ex))
+      (log/error (st/root-cause ex))
       (System/exit 1))))
