@@ -83,7 +83,7 @@
     ;; test ascii
     (is (= (tables/coerce :one :f5 "123") "123"))
     (is (= (tables/coerce :one :f5  123 ) "123"))
-    (is (thrown? Exception (tables/coerce :one :f5 (char 12345))))
+    (is (thrown? Exception (tables/coerce :one :f5 (char 955))))
 
     ;; test boolean
     (is (true?  (tables/coerce :one :f6 "true")))
