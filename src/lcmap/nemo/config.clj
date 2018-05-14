@@ -66,6 +66,11 @@
   []
   (-> (environment) ok? with-except))
 
+(defn sanitize
+  "returns environment map safe to print in logs minus credentials"
+  [e]
+  (assoc e :db-pass "xxxxxxx"))
+
 (defn alia
   "alia shaped configuration"
   [e]

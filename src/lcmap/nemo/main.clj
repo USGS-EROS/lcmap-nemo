@@ -2,7 +2,7 @@
   "Start-up related functions and entry-point."
   (:require [clojure.tools.logging :as log]
             [mount.core]
-            [lcmap.nemo.config]
+            [lcmap.nemo.config :as config]
             [lcmap.nemo.db]
             [lcmap.nemo.http]
             [lcmap.nemo.jmx]
@@ -21,11 +21,12 @@
     ;; states.
     (log/debug "nemo add shutdown hook")
     (lcmap.nemo.util/add-shutdown-hook)
-    ;; Remember, only mount states defined that are defined
-    ;; in required namepsaces are started.
     (log/debug "nemo start")
+    (log/debug "environment" (config/sanitize (config/checked-environment)))
+    ;; Remember, only mount states defined that are defined
+    ;; in required namespaces are started.
     (mount.core/start)
     (catch RuntimeException ex
-      (log/errorf "error starting nemo: %s" (.getMessage ex))
       (log/fatalf "nemo died during startup")
+      (println (.getCause ex))
       (System/exit 1))))
