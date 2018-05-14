@@ -20,7 +20,7 @@
   [table partition-keys]
   (shared/go-fish {:url (format "/%s" table) :query-params partition-keys}))
 
-(deftest get-tables-url-test
+(deftest get-tables-test
   (testing "testing get-table resource"
     (let [resp (http-tables)]
       (is (= 200 (:status resp)))
