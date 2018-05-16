@@ -1,11 +1,11 @@
 deps-up:
-	docker-compose -f resources/docker-compose.yml nemo-cassandra up
+	docker-compose -f resources/docker-compose.yml up nemo-cassandra
 
 deps-up-d:
-	docker-compose -f resources/docker-compose.yml nemo-cassandra up -d
+	docker-compose -f resources/docker-compose.yml up -d nemo-cassandra
 
 deps-down:
-	docker-compose -f resources/docker-compose.yml nemo-cassandra down
+	docker-compose -f resources/docker-compose.yml down nemo-cassandra
 
 db-schema:
 	docker cp resources/schema.cql nemo-cassandra:/
