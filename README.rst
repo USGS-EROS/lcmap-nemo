@@ -24,7 +24,7 @@ to query Cassandra partitions.
 +============================+=====================================+
 | /                          | { "tables": ["table1", "table2"] }  |
 +----------------------------+-------------------------------------+
-| /table1                    | ..code-block:: json                 |
+| /table1                    | .. code-block:: json                |
                              |                                     |
                              |   {{ "key1": 0, "key2": "value1" }, |
 |                            |    { "key1": 1, "key2": "value2" }} |
