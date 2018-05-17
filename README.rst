@@ -10,14 +10,13 @@ Features
 * Represents Apache Cassandra partitions as JSON over HTTP
 * Works with all supported Cassandra data types
 * Simple configuration: keyspace, table list, credentials, hosts and ports
-* Traversable resource tree: tables to partition keys to partition data
+* Dynamic discoverability: tables, partition keys and data
 * Built on Clojure 1.9, http-kit, Ring & Compojure
 
-Traversable Resource Tree
--------------------------
-Nemo resources create a traversable resource tree which allows clients
-to dynamically discover tables & partition keys, which may then be used
-to query Cassandra partitions.
+Dynamic Discoverability
+-----------------------
+Nemo resources create a traversable tree which allows clients
+to discover tables, partition keys & partition data.
 
 +-----------------------------+-------------------------------------+
 | Resource                    | Result                              |
