@@ -1,9 +1,15 @@
 .. image:: https://travis-ci.org/USGS-EROS/lcmap-nemo.svg?branch=develop
     :target: https://travis-ci.org/USGS-EROS/lcmap-nemo
 
-Nemo
-====
+==========             
+lcmap-nemo
+==========
 Read Apache Cassandra partitions over HTTP.
+
+On DockerHub
+------------
+
+https://hub.docker.com/r/usgseros/lcmap-nemo
 
 Features
 --------
@@ -39,13 +45,13 @@ to discover tables, partition keys & partition data.
 
 Documentation (WIP)
 -------------------
-* Changelog
+* `Changelog <docs/changelog.rst/>`_
 * Configuration
 * Running
 * HTTP requests & responses
 * Testing & Developing
 * CPU and Memory Profiling Results (WIP)
-* Limitations (Does not accept maps, sets, lists or blobs as partition keys (is this even valid for Cassandra?)
+* Limitations (Does not accept maps, sets, lists or blobs as partition keys (is this even valid for Cassandra?))
 
 Running
 -------
