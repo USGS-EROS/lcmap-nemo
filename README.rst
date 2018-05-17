@@ -19,24 +19,24 @@ Nemo resources create a traversable resource tree which allows clients
 to dynamically discover tables & partition keys, which may then be used
 to query Cassandra partitions.
 
-+----------------------------+-------------------------------------+
-| Resource                   | Result                              |
-+============================+=====================================+
-|.. code-block:: javascript  | .. code-block:: javascript          |
-|                            |                                     |
-|  /                         |   { "tables": ["table1", "table2"] }|
-+----------------------------+-------------------------------------+
-|.. code-block:: ReST        | .. code-block:: javascript          |
-|                            |                                     |
-|  /table1                   |   {                                 |
-|                            |     { "key1": 0, "key2": "value1" },|
-|                            |     { "key1": 1, "key2": "value2" } |
-|                            |   }                                 |
-+----------------------------+-------------------------------------+
-| /table1?key1=0&key2=value1 | .. code-block:: javascript          |
-|                            |                                     |
-|                            |   [{ <partition data> }]            |
-+----------------------------+-------------------------------------+
++-----------------------------+-------------------------------------+
+| Resource                    | Result                              |
++=============================+=====================================+
+|.. code-block:: ReST         | .. code-block:: javascript          |
+|                             |                                     |
+|  /                          |   { "tables": ["table1", "table2"] }|
++-----------------------------+-------------------------------------+
+|.. code-block:: ReST         | .. code-block:: javascript          |
+|                             |                                     |
+|  /table1                    |   {                                 |
+|                             |     { "key1": 0, "key2": "value1" },|
+|                             |     { "key1": 1, "key2": "value2" } |
+|                             |   }                                 |
++-----------------------------+-------------------------------------+
+|.. code-block:: ReST         | .. code-block:: javascript          |
+|                             |                                     |
+|   /table1?key1=0&key2=value1|   [{ <partition data> }]            |
++-----------------------------+-------------------------------------+
 
 Documentation (WIP)
 -------------------
