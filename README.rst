@@ -47,7 +47,8 @@ Documentation (WIP)
 -------------------
 * `Changelog <docs/changelog.rst/>`_
 * `Running <docs/running.rst/>`_
-* HTTP requests & responses
+* `HTTP requests & responses <docs/http.rst/>`_
+* Encoding 
 * Testing & Developing
 * CPU and Memory Profiling Results (WIP)
 * Limitations (Does not accept maps, sets, lists or blobs as partition keys (is this even valid for Cassandra?))
