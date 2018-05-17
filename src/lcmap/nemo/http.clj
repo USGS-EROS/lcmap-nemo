@@ -75,8 +75,9 @@
 (defmethod get-partition :partition-data
   [table-name request]
   (log/debugf (format "GET %s %s" table-name (:params request)))
-  (let [results (tables/query-data table-name (:params request))]
-    {:status 200 :body results}))
+  (try
+    {:status 200 :body (tables/query-data table-name (:params request))}
+    (catch IllegalArgumentException e {:status 400 :body (.getMessage e)})))
 
 (defn healthy
   "Handler for checking application health."

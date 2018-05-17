@@ -170,11 +170,11 @@ Table and column descriptions are in `setup.clj <../test/lcmap/nemo/setup.clj/>`
 
 
   #-----------------------------------------
-  # Example parameter coercion failure
+  # Parameter coercion failure
   #-----------------------------------------
   
   user@machine:~$ http http://localhost:5757/one pk1==1897175 pk2==not-a-number
-  HTTP/1.1 500 Internal Server Error
+  HTTP/1.1 400 Bad Request
   Content-Length: 33
   Date: Thu, 17 May 2018 21:17:00 GMT
   Server: http-kit

@@ -79,7 +79,7 @@
   (let [msg (format "%s cannot be coerced to %s" value to-type)]
     (log/warn msg)
     (log/debug exception)
-    (throw (Exception. msg))))
+    (throw (IllegalArgumentException. msg))))
   
 (defmulti coerce
   "Multimethod to coerce strings to types expected by Cassandra"
