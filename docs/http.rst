@@ -156,7 +156,7 @@ Table and column descriptions are in `setup.clj <../test/lcmap/nemo/setup.clj/>`
   ]
 
   #-----------------------------------------
-  # Zero results for partition keys
+  # Zero results for missing partition keys
   #-----------------------------------------
   
   user@machine:~$ http http://localhost:5757/one pk1==1897175 pk2==12033
@@ -173,10 +173,29 @@ Table and column descriptions are in `setup.clj <../test/lcmap/nemo/setup.clj/>`
   # Example parameter coercion failure
   #-----------------------------------------
   
-  david@dev:~$ http http://localhost:5757/one pk1==1897175 pk2==not-a-number
+  user@machine:~$ http http://localhost:5757/one pk1==1897175 pk2==not-a-number
   HTTP/1.1 500 Internal Server Error
   Content-Length: 33
   Date: Thu, 17 May 2018 21:17:00 GMT
   Server: http-kit
 
   not-a-number cannot be coerced to :bigint
+
+
+  #-----------------------------------------
+  # Missing parameter
+  #-----------------------------------------
+  
+  user@machine:~$ http http://localhost:5757/one pk1==1897175
+  HTTP/1.1 400 Bad Request
+  Content-Length: 37
+  Content-Type: application/json; charset=utf-8
+  Date: Thu, 17 May 2018 21:30:02 GMT
+  Server: http-kit
+
+  {
+    "required_parameters": [
+        "pk2", 
+        "pk1"
+    ]
+  }
