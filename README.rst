@@ -26,9 +26,9 @@ to query Cassandra partitions.
 |                            |                                     |
 |  /                         |   { "tables": ["table1", "table2"] }|
 +----------------------------+-------------------------------------+
-| /table1                    | .. code-block:: javascript          |
+|.. code-block:: javascript  | .. code-block:: javascript          |
 |                            |                                     |
-|                            |   {                                 |
+|  /table1                   |   {                                 |
 |                            |     { "key1": 0, "key2": "value1" },|
 |                            |     { "key1": 1, "key2": "value2" } |
 |                            |   }                                 |
