@@ -46,44 +46,12 @@ to discover tables, partition keys & partition data.
 Documentation (WIP)
 -------------------
 * `Changelog <docs/changelog.rst/>`_
-* Configuration
-* Running
+* `Running <docs/running.rst/>`_
 * HTTP requests & responses
 * Testing & Developing
 * CPU and Memory Profiling Results (WIP)
 * Limitations (Does not accept maps, sets, lists or blobs as partition keys (is this even valid for Cassandra?))
 
-Running
--------
-
-From a jarfile:
-
-.. code-block:: bash
-                
-   export HTTP_PORT=5757
-   export DB_HOST=a.cassandra.host
-   export DB_PORT=9042
-   export DB_USER=cassandra_user
-   export DB_PASS=cassandra_pw
-   export DB_KEYSPACE=target_keyspace
-   export DB_TABLES=table1,table2,table3
-   
-   java -jar lcmap-nemo:1.0
-
-   
-From Docker:
-
-.. code-block:: bash
-
-   docker run -it --rm \
-              -e HTTP_PORT=5757 \
-              -e DB_HOST=a.cassandra.host \
-              -e DB_PORT=9042 \
-              -e DB_USER=cassandra_user \
-              -e DB_PASS=cassandra_pw \
-              -e DB_KEYSPACE=target_keyspace \
-              -e DB_TABLES=table1,table2,table3 \
-              usgseros/lcmap-nemo
 
 Versioning
 ----------
