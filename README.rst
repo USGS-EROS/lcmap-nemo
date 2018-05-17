@@ -22,7 +22,7 @@ to query Cassandra partitions.
 +----------------------------+-------------------------------------+
 | Resource                   | Result                              |
 +============================+=====================================+
-|..code-block:: javascript   | .. code-block:: javascript          |
+|.. code-block:: javascript  | .. code-block:: javascript          |
 |                            |                                     |
 |  /                         |   { "tables": ["table1", "table2"] }|
 +----------------------------+-------------------------------------+
