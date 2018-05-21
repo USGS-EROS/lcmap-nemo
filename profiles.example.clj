@@ -1,4 +1,4 @@
-;; Uncomment and modify to override default dev & test environment in project.clj
+;; Uncomment, modify and rename to profiles.clj to override default dev & test environment in project.clj
 ;; See https://github.com/technomancy/leiningen/blob/master/doc/PROFILES.md for options
 
 ;; {:dev  {:env {:db-host "localhost"
