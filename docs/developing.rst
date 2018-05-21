@@ -38,7 +38,7 @@ Launch Nemo
 The repl will automatically import most Nemo namespaces using short aliases, and
 will also attempt to launch Nemo at repl startup.
 
-See `<user.clj ../dev/user.clj/>`_
+See `user.clj <dev/user.clj/>`_
   
 Test Nemo
 ---------
