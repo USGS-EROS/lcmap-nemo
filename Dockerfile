@@ -1,13 +1,14 @@
-FROM usgseros/ubuntu-gis-clj
+FROM openjdk:alpine
 MAINTAINER USGS LCMAP http://eros.usgs.gov
 
 ARG version
-ENV jarfile nemo-$version-standalone.jar
-EXPOSE 5656
+ENV jarfile lcmap-nemo-$version-standalone.jar
+ENV HTTP_PORT 5759
+EXPOSE 5759
 
 RUN mkdir /app
 WORKDIR /app
 COPY target/$jarfile $jarfile
 COPY resources/log4j.properties log4j.properties
 
-ENTRYPOINT java -server -Xms$Xms -Xmx$Xmx -XX:+UseG1GC -jar $jarfile
+ENTRYPOINT java -server -XX:+UseG1GC -jar $jarfile
