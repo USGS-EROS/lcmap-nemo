@@ -33,6 +33,7 @@ Launch Nemo
 
   # run Nemo from repl (starts automatically)
   lein repl
+  user=> (mount/stop)
   user=> (mount/start)
 
 The repl will automatically import most Nemo namespaces using short aliases, and
