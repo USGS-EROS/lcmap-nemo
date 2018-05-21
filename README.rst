@@ -49,11 +49,7 @@ Documentation (WIP)
 * `Running <docs/running.rst/>`_
 * `Developing <docs/developing.rst/>`_
 * `HTTP requests & responses <docs/http.rst/>`_
-* Encoding
-* Alia Settings
-* CPU and Memory usage (WIP)
-* Limitations (Does not accept maps, sets, lists or blobs as partition keys (is this even valid for Cassandra?))
-
+* `Notes <docs/notes.rst/>`_
 
 Versioning
 ----------
