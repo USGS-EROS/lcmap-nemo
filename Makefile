@@ -17,7 +17,6 @@ deps-up-d:
 deps-down:
 	docker-compose -f resources/docker-compose.yml down nemo-cassandra
 
-
 docker-build:
 	@docker build --build-arg version=$(VERSION) -t $(BUILD_TAG) --rm=true --compress $(PWD)
 
@@ -30,9 +29,17 @@ docker-login:
 docker-push: docker-login
 	docker push $(TAG)
 
+uberjar:
+	lein uberjar
+
+clean:
+	lein clean
+
 debug:
 	@echo "VERSION:   $(VERSION)"
 	@echo "IMAGE:     $(IMAGE)"
 	@echo "BRANCH:    $(BRANCH)"
 	@echo "BUILD_TAG: $(BUILD_TAG)"
 	@echo "TAG:       $(TAG)"
+
+
