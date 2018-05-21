@@ -6,8 +6,3 @@ deps-up-d:
 
 deps-down:
 	docker-compose -f resources/docker-compose.yml down nemo-cassandra
-
-db-schema:
-	docker cp resources/schema.cql nemo-cassandra:/
-	docker exec -u root nemo-cassandra cqlsh localhost -f schema.cql
-
