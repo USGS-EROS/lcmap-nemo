@@ -7,7 +7,6 @@ TAG        := $(shell if [ "$(BRANCH)" = "master" ];\
                          else echo "$(IMAGE):$(VERSION)-$(BRANCH)";\
                       fi)
 
-
 deps-up:
 	docker-compose -f resources/docker-compose.yml up nemo-cassandra
 
@@ -16,6 +15,15 @@ deps-up-d:
 
 deps-down:
 	docker-compose -f resources/docker-compose.yml down nemo-cassandra
+
+uberjar:
+	lein uberjar
+
+clean:
+	lein clean
+
+test:
+	lein test
 
 docker-build:
 	@docker build --build-arg version=$(VERSION) -t $(BUILD_TAG) --rm=true --compress $(PWD)
@@ -29,11 +37,7 @@ docker-login:
 docker-push: docker-login
 	docker push $(TAG)
 
-uberjar:
-	lein uberjar
-
-clean:
-	lein clean
+all: clean test uberjar docker-build docker-tag docker-push
 
 debug:
 	@echo "VERSION:   $(VERSION)"
