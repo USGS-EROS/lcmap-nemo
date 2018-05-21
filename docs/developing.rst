@@ -41,3 +41,21 @@ Test Nemo
   # warnings and stack traces are expected as long as all tests pass
   make tests
 
+Build Nemo
+----------
+.. code-block:: bash
+                
+  user@machine:~/lcmap-nemo$ lein uberjar
+  Compiling lcmap.nemo.config
+  Compiling lcmap.nemo.http
+  Compiling lcmap.nemo.util
+  Compiling lcmap.nemo.jmx
+  Compiling lcmap.nemo.tables
+  Compiling lcmap.nemo.db
+  Compiling lcmap.nemo.main
+  Created /home/david/Projects/lcmap-nemo/target/nemo-1.0.0-SNAPSHOT.jar
+  Created /home/david/Projects/lcmap-nemo/target/nemo-1.0.0-SNAPSHOT-standalone.jar
+
+Run Nemo
+--------
+See `Running <docs/running.rst/>`_
