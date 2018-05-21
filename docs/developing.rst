@@ -58,4 +58,4 @@ Build Nemo
 
 Run Nemo
 --------
-See `Running <docs/running.rst/>`_
+See `Running <running.rst/>`_
