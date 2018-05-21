@@ -1,4 +1,4 @@
-(defproject nemo "1.0.0-SNAPSHOT"
+(defproject nemo "1.0.0"
   :description "Cassandra table HTTP Adapter"
   :url "http://github.com/usgs-eros/lcmap-nemo"
   :license {:name "Unlicense"
