@@ -112,15 +112,15 @@
   ([rows]
    (into [] (repeatedly rows random-table-data))))
 
-(def keyspace "nemo_test")
-
 (defn connect []
   (let [cfg      (config/checked-environment)
         tables   (:db-tables cfg)
+        keyspace (:db-keyspace cfg)
         cluster  (-> cfg config/alia alia/cluster)
         session  (alia/connect cluster)]
     {:cfg      cfg
      :tables   tables
+     :keyspace keyspace
      :cluster  cluster
      :session  session}))
 
@@ -129,6 +129,7 @@
         cfg      (:cfg db)
         tables   (:tables db)
         cluster  (:cluster db)
+        keyspace (:keyspace db)
         session  (:session db)]
     (log/debug "nemo db setup started")
 
@@ -158,10 +159,13 @@
         (alia/shutdown cluster)
         (log/debugf "alia connection shut down")))))
 
-(defn nuke []
-  (let [db      (connect)
-        cluster (:cluster db)
-        session (:session db)]
+;; there's real danger having nuke keyspace run against a value not hardcoded.
+;; make keyspace configurable if it's really a problem.
+(defn nuke-test-keyspace []
+  (let [db       (connect)
+        cluster  (:cluster db)
+        session  (:session db)
+        keyspace "nemo_test"]
     (try
       (do
         (log/debugf "dropping keyspace: '%s'" keyspace)

@@ -11,7 +11,7 @@
   (log/tracef "schema-fixture up")
   (setup/init)
   (f)
-  (setup/nuke)
+  (setup/nuke-test-keyspace)
   (log/tracef "schema-fixture down"))
 
 (defn mount-fixture [f]
