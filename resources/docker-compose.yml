@@ -4,8 +4,6 @@ services:
 
   nemo-cassandra:
     image: cassandra:3.9
-    ports:
-    - "9044:9042"
     network_mode: "host"
     
   nemo:
@@ -14,7 +12,7 @@ services:
       - "5657:5657"
     network_mode: "host"
     environment:
-      - DB_HOST=localhost:9044
+      - DB_HOST=localhost:9042
       - DB_KEYSPACE=nemo_local
       - HTTP_PORT=5657
       - Xms=4352m
