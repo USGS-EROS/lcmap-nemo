@@ -18,6 +18,8 @@ Set up Development Database
 ---------------------------
 .. code-block:: bash
 
+  # development database is configured in profiles.clj
+  # The dev profile is used from the repl only
   lein repl
   user=> (require '[lcmap.nemo.setup :as setup])
   user=> (setup/init)
@@ -38,6 +40,7 @@ Test Nemo
 ---------
 .. code-block:: bash
 
+  # uses the test profile in profiles.clj
   # warnings and stack traces are expected as long as all tests pass
   make tests
 

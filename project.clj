@@ -30,11 +30,25 @@
   ;; Emit warnings on all reflection calls.
   :global-vars {*warn-on-reflection* true}
   :plugins [[lein-environ "1.1.0"]]
-  :profiles {:dev     {:resource-paths ["dev" "test"]}
+  :profiles {:dev     {:resource-paths ["dev" "test"]
+                       :env {:db-host "localhost"
+                             :db-port 9042
+                             :db-keyspace "nemo_dev"
+                             :db-user "cassandra"
+                             :db-pass "cassandra"
+                             :db-tables "one,two"
+                             :http-port 5757}}
              :repl    {:resource-paths ["dev" "test"]
                        :dependencies [[cider/cider-nrepl "0.15.1"]
                                       [org.slf4j/slf4j-log4j12 "1.7.21"]]}
-             :test    {:resource-paths ["test" "test/resources"]}
+             :test    {:env {:db-host "localhost"
+                             :db-port 9042
+                             :db-keyspace "nemo_test"
+                             :db-user "cassandra"
+                             :db-pass "cassandra"
+                             :db-tables "one,two"
+                             :http-port 5758}
+                       :resource-paths ["test" "test/resources"]}
              :uberjar {:omit-source true
                        :aot :all}}
   :jvm-opts ["-server"]
