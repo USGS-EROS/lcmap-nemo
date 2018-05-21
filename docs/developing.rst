@@ -31,11 +31,15 @@ Launch Nemo
   # run Nemo from lein
   lein run
 
-  # run Nemo from repl
+  # run Nemo from repl (starts automatically)
   lein repl
-  user=> (require '[lcmap.nemo.http :as http])
   user=> (mount/start)
 
+The repl will automatically import most Nemo namespaces using short aliases, and
+will also attempt to launch Nemo at repl startup.
+
+See `<user.clj ../dev/user.clj/>`_
+  
 Test Nemo
 ---------
 .. code-block:: bash

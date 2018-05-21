@@ -2,11 +2,12 @@
   "Developer namespace."
   (:require [clojure.edn :as edn]
             [clojure.stacktrace :as stacktrace]
-            [lcmap.nemo.jmx]
-            [lcmap.nemo.http]
-            [lcmap.nemo.db :as db]
-            [lcmap.nemo.util :as util]
             [lcmap.nemo.config :as config]
+            [lcmap.nemo.db :as db]
+            [lcmap.nemo.http :as http]
+            [lcmap.nemo.jmx :as jmx]
+            [lcmap.nemo.setup :as setup]
+            [lcmap.nemo.util :as util]
             [mount.core :as mount])
   (:use     [clojure.repl]
             [clojure.tools.namespace.repl :only (refresh)])
