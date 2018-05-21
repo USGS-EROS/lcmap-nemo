@@ -7,13 +7,11 @@ services:
     network_mode: "host"
     
   nemo:
-    image: "usgseros/lcmap-nemo:develop-1.0.0-RC1"
-    ports:
-      - "5657:5657"
+    image: "usgseros/lcmap-nemo:build"
     network_mode: "host"
     environment:
       - DB_HOST=localhost:9042
-      - DB_KEYSPACE=nemo_local
+      - DB_KEYSPACE=nemo_dev
       - HTTP_PORT=5657
       - Xms=4352m
       - Xmx=4352m
