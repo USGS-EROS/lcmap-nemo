@@ -11,4 +11,4 @@ WORKDIR /app
 COPY target/$jarfile $jarfile
 COPY resources/log4j.properties log4j.properties
 
-ENTRYPOINT java -server -XX:+UseG1GC -jar $jarfile
+ENTRYPOINT java -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -server -XX:+UseG1GC -jar $jarfile
