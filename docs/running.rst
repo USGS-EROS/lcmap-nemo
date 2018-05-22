@@ -20,6 +20,8 @@ From Docker:
 
 .. code-block:: bash
 
+   # see https://hub.docker.com/r/usgseros/lcmap-nemo/tags/
+   
    docker run -it --rm \
               -e HTTP_PORT=5757 \
               -e DB_HOST=a.cassandra.host \
