@@ -7,6 +7,11 @@ Get the Code
 
   git clone https://github.com/usgs-eros/lcmap-nemo
 
+All releases are merged to master and tagged.
+
+If fixes to a previous version are necessary the tag should be checked out
+from master into a topic branch, then merged to a release branch matching the
+new version.  The release branch should then be merged into master and tagged as before.
 
 Launch Cassandra
 -------------------
