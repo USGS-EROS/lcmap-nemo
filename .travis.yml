@@ -15,7 +15,7 @@ before_install:
 
 deploy:
   - provider: script
-    script: make docker-build && make docker-tag && make docker-push
+    script: make uberjar && make docker-build && make docker-tag && make docker-push
     on:
       all_branches: true
 
