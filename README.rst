@@ -55,6 +55,12 @@ Versioning
 ----------
 Nemo follows semantic versioning: http://semver.org/
 
+Nemo major & minor version octets match CQL major & minor versions.
+
+The third octet is reserved for Nemo releases against Cassandra.
+
+See https://cassandra.apache.org/doc/latest/cql/changes.html#id2.
+
 License
 -------
 This is free and unencumbered software released into the public domain.
