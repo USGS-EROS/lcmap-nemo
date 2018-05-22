@@ -12,6 +12,8 @@ From a jarfile:
    export DB_PASS=cassandra_pw
    export DB_KEYSPACE=target_keyspace
    export DB_TABLES=table1,table2,table3
+
+   # use make uberjar or lein uberjar to build
    
    java -jar lcmap-nemo-3.4.0-standalone.jar
 
