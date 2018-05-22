@@ -57,7 +57,9 @@ Test Nemo
 Build Nemo
 ----------
 .. code-block:: bash
-                
+
+  # may also use make uberjar
+  
   user@machine:~/lcmap-nemo$ lein uberjar
   Compiling lcmap.nemo.config
   Compiling lcmap.nemo.http
@@ -72,3 +74,9 @@ Build Nemo
 Run Nemo
 --------
 See `Running <running.rst/>`_
+
+Deploy to Dockerhub
+-------------------
+Travis-ci automatically builds each commit and pushes a built Docker image to Dockerhub tagged with the version and branchname.
+
+To deploy manually, see the `Makefile <../Makefile/>`_.

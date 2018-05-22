@@ -13,7 +13,7 @@ From a jarfile:
    export DB_KEYSPACE=target_keyspace
    export DB_TABLES=table1,table2,table3
    
-   java -jar lcmap-nemo-1.0.0-standalone.jar
+   java -jar lcmap-nemo-3.4.0-standalone.jar
 
    
 From Docker:
@@ -30,4 +30,4 @@ From Docker:
               -e DB_PASS=cassandra_pw \
               -e DB_KEYSPACE=target_keyspace \
               -e DB_TABLES=table1,table2,table3 \
-              usgseros/lcmap-nemo:1.0.0
+              usgseros/lcmap-nemo:3.4.0

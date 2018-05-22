@@ -1,6 +1,6 @@
 Changelog
 =========
 
-1.0
----
-Initial release.
+3.4.0
+------
+Initial release, supporting CQL 3.4.

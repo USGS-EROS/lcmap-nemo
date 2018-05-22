@@ -3,7 +3,7 @@ Additional Notes
 
 Alia Settings
 -------------
-Alia settings are hard-coded for load balancing and consistency in Nemo 1.0.
+Alia settings are hard-coded for load balancing and consistency in Nemo.
 
 These may be parameterized in a future version.
 
