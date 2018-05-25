@@ -15,6 +15,7 @@
   "
   (:require [clojure.tools.logging :as log]
             [environ.core :refer [env]]
+            [lcmap.nemo.util :as util]
             [qbits.alia.policy.load-balancing :as lb]))
 
 (defn string->vector
@@ -34,15 +35,19 @@
 (defn environment
   "return the environment map for nemo"
   []
-  {:db-host               (-> env :db-host)
-   :db-user               (-> env :db-user)
-   :db-pass               (-> env :db-pass)
-   :db-port               (-> env :db-port)
-   :db-keyspace           (-> env :db-keyspace)
-   :db-tables             (-> env :db-tables string->vector)
-   :http-port             (-> env :http-port)
-   :load-balancing-policy lb/round-robin-policy
-   :consistency           :quorum})
+  {:db-host                   (-> env :db-host)
+   :db-user                   (-> env :db-user)
+   :db-pass                   (-> env :db-pass)
+   :db-port                   (-> env :db-port)
+   :db-keyspace               (-> env :db-keyspace)
+   :db-tables                 (-> env :db-tables string->vector)
+   :db-connect-timeout-millis (util/numberize
+                               (or (-> env :db-connect-timeout-millis) 30000))
+   :db-read-timeout-millis    (util/numberize
+                               (or (-> env :db-read-timeout-millis) 600000))
+   :http-port                 (-> env :http-port)
+   :load-balancing-policy     lb/round-robin-policy
+   :consistency               :quorum})
 
 (defn ok?
   "checks environment for nil values"
@@ -77,4 +82,6 @@
   {:contact-points        (-> e :db-host string->vector)
    :credentials           {:user (:db-user e) :password (:db-pass e)}
    :query-options         {:consistency (:consistency e)}
-   :load-balancing-policy (:load-balancing-policy e)})
+   :load-balancing-policy (:load-balancing-policy e)
+   :socket-options        {:read-timeout-millis    (:db-read-timeout-millis e)
+                           :connect-timeout-millis (:db-connect-timeout-millis e)}})
