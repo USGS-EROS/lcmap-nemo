@@ -24,7 +24,7 @@ From Docker:
 
    # see https://hub.docker.com/r/usgseros/lcmap-nemo/tags/
    
-   docker run -it --rm \
+   docker run -it --rm -p 5757:5757 \
               -e HTTP_PORT=5757 \
               -e DB_HOST=a.cassandra.host \
               -e DB_PORT=9042 \

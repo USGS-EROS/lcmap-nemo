@@ -3,8 +3,7 @@ MAINTAINER USGS LCMAP http://eros.usgs.gov
 
 ARG version
 ENV jarfile lcmap-nemo-$version-standalone.jar
-ENV HTTP_PORT 5759
-EXPOSE 5759
+ENV HTTP_PORT 5757
 
 RUN mkdir /app
 WORKDIR /app
