@@ -93,6 +93,27 @@
     (catch Exception e
       (coerce-catch value :bigint e))))
 
+(defmethod coerce :int
+  [_ _ value]
+  (try
+    (-> value util/numberize int)
+    (catch Exception e
+      (coerce-catch value :int e))))
+
+(defmethod coerce :smallint
+  [_ _ value]
+  (try
+    (-> value util/numberize short)
+    (catch Exception e
+      (coerce-catch value :smallint e))))
+
+(defmethod coerce :tinyint
+  [_ _ value]
+  (try
+    (-> value util/numberize byte)
+    (catch Exception e
+      (coerce-catch value :tinyint e))))
+
 (defmethod coerce :timestamp
   [_ _ value]
   (try
