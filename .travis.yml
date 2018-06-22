@@ -1,0 +1,25 @@
+language: clojure
+
+jdk:
+- openjdk8
+
+services:
+  - docker
+
+sudo: required
+  
+before_install:
+  - sudo sysctl -w vm.max_map_count=262144
+  - make deps-up-d
+  - sudo apt-get update -qq
+
+deploy:
+  - provider: script
+    script: make uberjar && make docker-build && make docker-tag && make docker-push
+    on:
+      all_branches: true
+
+notifications:
+  slack:
+    rooms:
+      - lcmap:UTqlh9PfPVomfpli10WKyZoh#cicd

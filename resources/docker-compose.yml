@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+
+  nemo-cassandra:
+    image: cassandra:3.9
+    network_mode: "host"
+    
+  nemo:
+    image: "usgseros/lcmap-nemo:build"
+    network_mode: "host"
+    environment:
+      - DB_HOST=localhost:9042
+      - DB_KEYSPACE=nemo_dev
+      - HTTP_PORT=5657
+      - Xms=4352m
+      - Xmx=4352m
