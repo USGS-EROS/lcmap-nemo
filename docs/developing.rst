@@ -77,6 +77,6 @@ See `Running <running.rst/>`_
 
 Deploy to Dockerhub
 -------------------
-Travis-ci automatically builds each commit and pushes a built Docker image to Dockerhub tagged with the version and branchname.
+Travis-CI automatically builds each commit and pushes a built Docker image to Dockerhub tagged with the version and branchname.
 
 To deploy manually, see the `Makefile <../Makefile/>`_.
