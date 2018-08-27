@@ -26,13 +26,16 @@
 
 (deftest alia-test
   (testing "testing alia configuration"
-    (let [env {:db-host "host1,host2"
+    (let [env {:db-host "  host1,  host2   "
+               :db-port 9999
                :db-user "user"
                :db-pass "pass"
                :consistency "1"
                :load-balancing-policy "lbp"}
           cfg (alia env)]
+      
       (is (= ["host1" "host2"] (:contact-points cfg)))
+      (is (= 9999 (:port cfg)))
       (is (= {:user "user" :password "pass"} (:credentials cfg)))
       (is (= {:consistency "1"} (:query-options cfg)))
       (is (= "lbp" (:load-balancing-policy cfg))))))
