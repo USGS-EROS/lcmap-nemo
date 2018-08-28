@@ -26,10 +26,6 @@ Set up Development Database
   # development database is configured in project.clj :repl profile
   # may override with profiles.clj 
   lein repl
-  user=> (require '[lcmap.nemo.setup :as setup])
-  user=> (setup/init)
-
-  # you may also set up nemo_dev keyspace & tables with (init)
   user=> (init)
 
 Launch Nemo
