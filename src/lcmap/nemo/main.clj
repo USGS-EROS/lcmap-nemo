@@ -24,7 +24,7 @@
     (lcmap.nemo.util/add-shutdown-hook)
     (log/debug "nemo start")
     (log/debug "environment" (config/sanitize (config/checked-environment)))
-    ;; Remember, only mount states defined that are defined
+    ;; Remember, only mount states that are defined
     ;; in required namespaces are started.
     (mount.core/start)
     (catch RuntimeException ex

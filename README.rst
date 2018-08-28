@@ -43,7 +43,7 @@ to discover tables, partition keys & partition data.
 |   /table1?key1=0&key2=value1|   [{ <partition data> }]            |
 +-----------------------------+-------------------------------------+
 
-Documentation (WIP)
+Documentation
 -------------------
 * `Changelog <docs/changelog.rst/>`_
 * `Running <docs/running.rst/>`_

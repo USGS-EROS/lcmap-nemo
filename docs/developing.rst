@@ -26,8 +26,7 @@ Set up Development Database
   # development database is configured in project.clj :repl profile
   # may override with profiles.clj 
   lein repl
-  user=> (require '[lcmap.nemo.setup :as setup])
-  user=> (setup/init)
+  user=> (init)
 
 Launch Nemo
 -----------
@@ -36,13 +35,14 @@ Launch Nemo
   # run Nemo from lein
   lein run
 
-  # run Nemo from repl (starts automatically)
+  # run Nemo from repl 
   lein repl
-  user=> (mount/stop)
-  user=> (mount/start)
+  user=> (start)
 
-The repl will automatically import most Nemo namespaces using short aliases, and
-will also attempt to launch Nemo at repl startup.
+  # stop Nemo if necessary
+  user=> (stop)
+  
+The repl will automatically import most Nemo namespaces using short aliases
 
 See `user.clj <../dev/user.clj/>`_
   
@@ -68,8 +68,8 @@ Build Nemo
   Compiling lcmap.nemo.tables
   Compiling lcmap.nemo.db
   Compiling lcmap.nemo.main
-  Created /home/user/lcmap-nemo/target/nemo-1.0.0-SNAPSHOT.jar
-  Created /home/user/lcmap-nemo/target/nemo-1.0.0-SNAPSHOT-standalone.jar
+  Created /home/user/lcmap-nemo/target/nemo-3.4.1-SNAPSHOT.jar
+  Created /home/user/lcmap-nemo/target/nemo-3.4.1-SNAPSHOT-standalone.jar
 
 Run Nemo
 --------
@@ -77,6 +77,6 @@ See `Running <running.rst/>`_
 
 Deploy to Dockerhub
 -------------------
-Travis-ci automatically builds each commit and pushes a built Docker image to Dockerhub tagged with the version and branchname.
+Travis-CI automatically builds each commit and pushes a built Docker image to Dockerhub tagged with the version and branchname.
 
 To deploy manually, see the `Makefile <../Makefile/>`_.

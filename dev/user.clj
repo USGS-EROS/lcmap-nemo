@@ -14,14 +14,26 @@
   (:import [org.joda.time DateTime]))
 
 
-;;
-;; Starting a REPL will automatically setup and start the system.
-;;
+(defn init
+  []
+  (setup/init))
 
-(try
+(defn start
+  []
+  (try
   (print "starting mount components...")
   (mount/start)
   (print "...ready!")
   (catch RuntimeException ex
     (print "There was a problem automatically setting up and running nemo.")
-    (stacktrace/print-cause-trace ex)))
+    (stacktrace/print-cause-trace ex))))
+
+(defn stop
+  []
+  (try
+    (print "stopping mount components...")
+    (mount/stop)
+    (print "... stopped!")
+    (catch RuntimeException ex
+      (print "There was a problem automatically tearing down nemo.")
+      (stacktrace/print-cause-trace ex))))

@@ -1,5 +1,5 @@
-(defproject lcmap-nemo "3.4.0"
-  :description "Cassandra table HTTP Adapter"
+(defproject lcmap-nemo "3.4.1"
+  :description "Cassandra HTTP Partition Server"
   :url "http://github.com/usgs-eros/lcmap-nemo"
   :license {:name "Unlicense"
             :url ""}

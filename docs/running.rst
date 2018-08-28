@@ -12,10 +12,12 @@ From a jarfile:
    export DB_PASS=cassandra_pw
    export DB_KEYSPACE=target_keyspace
    export DB_TABLES=table1,table2,table3
+   export DB_CONNECT_TIMEOUT_MILLIS=30000
+   export DB_READ_TIMEOUT_MILLIS=600000
 
    # use make uberjar or lein uberjar to build
    
-   java -jar lcmap-nemo-3.4.0-standalone.jar
+   java -jar lcmap-nemo-3.4.1-standalone.jar
 
    
 From Docker:
@@ -32,4 +34,6 @@ From Docker:
               -e DB_PASS=cassandra_pw \
               -e DB_KEYSPACE=target_keyspace \
               -e DB_TABLES=table1,table2,table3 \
-              usgseros/lcmap-nemo:3.4.0
+	      -e DB_CONNECT_TIMEOUT_MILLIS=30000 \
+	      -e DB_READ_TIMEOUT_MILLIS=600000 \
+              usgseros/lcmap-nemo:3.4.1
