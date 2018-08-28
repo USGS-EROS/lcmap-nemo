@@ -28,7 +28,8 @@ Set up Development Database
   lein repl
   user=> (require '[lcmap.nemo.setup :as setup])
   user=> (setup/init)
-  # you may also set up nemo_dev keyspace & tables like so
+
+  # you may also set up nemo_dev keyspace & tables with (init)
   user=> (init)
 
 Launch Nemo
