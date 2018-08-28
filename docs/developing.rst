@@ -28,6 +28,8 @@ Set up Development Database
   lein repl
   user=> (require '[lcmap.nemo.setup :as setup])
   user=> (setup/init)
+  # you may also set up nemo_dev keyspace & tables like so
+  user=> (init)
 
 Launch Nemo
 -----------
@@ -36,13 +38,14 @@ Launch Nemo
   # run Nemo from lein
   lein run
 
-  # run Nemo from repl (starts automatically)
+  # run Nemo from repl 
   lein repl
-  user=> (mount/stop)
-  user=> (mount/start)
+  user=> (start)
 
-The repl will automatically import most Nemo namespaces using short aliases, and
-will also attempt to launch Nemo at repl startup.
+  # stop Nemo if necessary
+  user=> (stop)
+  
+The repl will automatically import most Nemo namespaces using short aliases
 
 See `user.clj <../dev/user.clj/>`_
   
