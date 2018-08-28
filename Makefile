@@ -1,6 +1,7 @@
 VERSION :=`./bin/version`
 IMAGE   := usgseros/lcmap-nemo
-BRANCH     := $(or $(TRAVIS_BRANCH),`git rev-parse --abbrev-ref HEAD | tr / -`)
+BRANCH     := $(or $(TRAVIS_BRANCH),`git rev-parse --abbrev-ref HEAD`)
+BRANCH     := $(shell echo $(BRANCH) | tr / -)
 BUILD_TAG  := $(IMAGE):build
 TAG        := $(shell if [ "$(BRANCH)" = "master" ];\
                          then echo "$(IMAGE):$(VERSION)";\

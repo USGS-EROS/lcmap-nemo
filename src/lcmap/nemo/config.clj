@@ -38,7 +38,7 @@
   {:db-host                   (-> env :db-host)
    :db-user                   (-> env :db-user)
    :db-pass                   (-> env :db-pass)
-   :db-port                   (-> env :db-port)
+   :db-port                   (-> env :db-port util/numberize)
    :db-keyspace               (-> env :db-keyspace)
    :db-tables                 (-> env :db-tables string->vector)
    :db-connect-timeout-millis (util/numberize
@@ -80,6 +80,7 @@
   "alia shaped configuration"
   [e]
   {:contact-points        (-> e :db-host string->vector)
+   :port                  (:db-port e)
    :credentials           {:user (:db-user e) :password (:db-pass e)}
    :query-options         {:consistency (:consistency e)}
    :load-balancing-policy (:load-balancing-policy e)
