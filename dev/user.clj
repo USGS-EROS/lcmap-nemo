@@ -14,9 +14,9 @@
   (:import [org.joda.time DateTime]))
 
 
-;;
-;; Starting a REPL will automatically setup and start the system.
-;;
+(defn init
+  []
+  (setup/init))
 
 (defn start
   []
