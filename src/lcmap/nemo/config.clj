@@ -3,15 +3,17 @@
 
   Values are obtained from ENV variables and/or profiles.clj. These are:
 
-  | ENV                     | Description                             |
-  | --------------          | ----------------------------------------|
-  | `HTTP_PORT`             | HTTP listener port                      |
-  | `DB_HOST`               | Cassandra node                          |
-  | `DB_USER`               | Cassandra username                      |
-  | `DB_PASS`               | Cassandra password                      |
-  | `DB_PORT`               | Cassandra cluster port                  |
-  | `DB_KEYSPACE`           | Cassandra keyspace name                 |
-  | `DB_TABLES`             | Cassandra tables to expose as resources |
+  | ENV                         | Description                             |
+  | --------------------------- | ----------------------------------------|
+  | `DB_HOST`                   | Cassandra node                          |
+  | `DB_USER`                   | Cassandra username                      |
+  | `DB_PASS`                   | Cassandra password                      |
+  | `DB_PORT`                   | Cassandra cluster port                  |
+  | `DB_KEYSPACE`               | Cassandra keyspace name                 |
+  | `DB_TABLES`                 | Cassandra tables to expose as resources |
+  | `DB_CONNECT_TIMEOUT_MILLIS` | Cassandra connection timeout            |
+  | `DB_READ_TIMEOUT_MILLIS`    | Cassandra read timeout                  |
+  | `HTTP_PORT`                 | HTTP listener port                      |
   "
   (:require [clojure.tools.logging :as log]
             [environ.core :refer [env]]

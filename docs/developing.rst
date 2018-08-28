@@ -71,8 +71,8 @@ Build Nemo
   Compiling lcmap.nemo.tables
   Compiling lcmap.nemo.db
   Compiling lcmap.nemo.main
-  Created /home/user/lcmap-nemo/target/nemo-1.0.0-SNAPSHOT.jar
-  Created /home/user/lcmap-nemo/target/nemo-1.0.0-SNAPSHOT-standalone.jar
+  Created /home/user/lcmap-nemo/target/nemo-3.4.1-SNAPSHOT.jar
+  Created /home/user/lcmap-nemo/target/nemo-3.4.1-SNAPSHOT-standalone.jar
 
 Run Nemo
 --------
